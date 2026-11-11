@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema de Distribución de Tareas</title>
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+
+  <!-- Pantalla de ingreso: de momento no pide contraseñas reales. -->
+  <div id="pantalla-ingreso" class="pantalla-ingreso">
+    <div class="presentacion">
+      <div class="marca marca-clara"><span class="simbolo">▦</span><span>Tareas<span class="marca-fina">Web</span></span></div>
+      <div class="texto-presentacion">
+        <span class="etiqueta-clara">SISTEMA DE GESTIÓN INTERNA</span>
+        <h1>Organiza el trabajo.<br><span>Avanza en equipo.</span></h1>
+        <p>Un espacio sencillo para crear tareas, distribuir responsabilidades y dar seguimiento al trabajo de tu institución.</p>
+        <div class="detalles-presentacion">
+          <span>✓ Distribución de tareas</span>
+          <span>✓ Seguimiento por empleado</span>
+          <span>✓ Roles diferenciados</span>
+        </div>
+      </div>
+      <small>Proyecto académico · Sistemas Distribuidos · 2026</small>
+    </div>
+
+    <div class="zona-ingreso">
+      <form id="formulario-ingreso" class="tarjeta-ingreso">
+        <div class="icono-ingreso">▦</div>
+        <span class="texto-ayuda">BIENVENIDO</span>
+        <h2>Ingresar al sistema</h2>
+        <p>Esta primera versión permite explorar las pantallas con usuarios de ejemplo.</p>
+        <label for="rol-ingreso">Selecciona un perfil de demostración</label>
+        <select id="rol-ingreso">
+          <option value="gerente">Gerente de área</option>
+          <option value="empleado">Empleado</option>
+          <option value="administrador">Administrador</option>
+        </select>
+        <button class="boton boton-primario boton-ancho" type="submit">Entrar al panel <span>→</span></button>
+        <div class="nota-demo">Esta pantalla es solo una demostración visual. Todavía no hay cuentas, contraseñas ni conexión al servidor.</div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Aplicación principal -->
+  <div id="aplicacion" class="aplicacion oculto">
+    <aside class="barra-lateral">
+      <div class="marca marca-oscura"><span class="simbolo">▦</span><span>Tareas<span class="marca-fina">Web</span></span></div>
+      <div class="institucion-lateral">
+        <span class="institucion-icono">⌂</span>
+        <div><strong id="nombre-institucion-lateral">Mi Institución</strong><small>Espacio de trabajo</small></div>
+      </div>
+      <div class="titulo-menu">MENÚ PRINCIPAL</div>
+      <nav id="menu-principal" class="menu-principal" aria-label="Menú principal">
+        <button class="enlace-menu" data-vista="panel" data-roles="gerente"><span>▦</span> Panel general</button>
+        <button class="enlace-menu" data-vista="tareas" data-roles="gerente"><span>▤</span> Tareas</button>
+        <button class="enlace-menu" data-vista="distribucion" data-roles="gerente"><span>⇄</span> Distribuir tareas</button>
+        <button class="enlace-menu" data-vista="seguimiento" data-roles="gerente"><span>◷</span> Seguimiento</button>
+        <button class="enlace-menu" data-vista="mis-tareas" data-roles="empleado"><span>▤</span> Mis tareas</button>
+        <button class="enlace-menu" data-vista="configuracion" data-roles="administrador"><span>⚙</span> Institución</button>
+        <button class="enlace-menu" data-vista="usuarios" data-roles="administrador"><span>♙</span> Áreas y usuarios</button>
+      </nav>
+      <div class="lateral-inferior">
+        <div class="tarjeta-ayuda"><strong>Primera etapa</strong><p>Prototipo visual. Próximamente agregaremos PHP y MariaDB.</p></div>
+        <button id="boton-salir" class="boton-salir" type="button"><span>⇥</span> Salir de la demostración</button>
+      </div>
+    </aside>
+
+    <div class="contenido-principal">
+      <header class="barra-superior">
+        <div class="cabecera-izquierda"><button id="boton-menu" class="boton-menu" aria-label="Abrir o cerrar menú">☰</button><span id="ruta-actual">Inicio / Panel general</span></div>
+        <div class="cabecera-derecha"><span class="indicador-demo">● Datos de ejemplo</span><div class="avatar" id="avatar-usuario">MC</div><div class="datos-usuario"><strong id="nombre-usuario">María Castro</strong><small id="rol-usuario">Gerente de área</small></div></div>
+      </header>
+
+      <main class="zona-trabajo">
+
+        <!-- Gerente: panel -->
+        <section id="vista-panel" class="vista">
+          <div class="encabezado-pagina"><div><div class="sobre-titulo">RESUMEN DE ACTIVIDADES</div><h1>Panel general</h1><p>Una vista rápida de las actividades de tu área.</p></div><button class="boton boton-primario" type="button" data-ir="tareas">+ Nueva tarea</button></div>
+          <div class="tarjetas-estadisticas">
+            <div class="tarjeta-estadistica"><span class="indicador-icono azul">▤</span><small>Tareas registradas</small><strong id="cantidad-tareas">0</strong><span class="texto-neutro">Actividades del área</span></div>
+            <div class="tarjeta-estadistica"><span class="indicador-icono naranja">◷</span><small>Pendientes</small><strong id="cantidad-pendientes">0</strong><span class="texto-neutro">Por comenzar</span></div>
+            <div class="tarjeta-estadistica"><span class="indicador-icono violeta">◉</span><small>En proceso</small><strong id="cantidad-proceso">0</strong><span class="texto-neutro">En desarrollo</span></div>
+            <div class="tarjeta-estadistica"><span class="indicador-icono verde">✓</span><small>Completadas</small><strong id="cantidad-completadas">0</strong><span class="texto-neutro">Finalizadas</span></div>
+          </div>
+          <div class="columnas-panel">
+            <div class="tarjeta tarjeta-actividad"><div class="cabecera-tarjeta"><div><h2>Tareas recientes</h2><p>Actividades registradas en el sistema</p></div><button class="enlace-texto" data-ir="tareas">Ver todas →</button></div><div class="tabla-contenedor"><table><thead><tr><th>Tarea</th><th>Prioridad</th><th>Estado</th></tr></thead><tbody id="tabla-resumen"></tbody></table></div></div>
+            <div class="tarjeta tarjeta-accesos"><div class="cabecera-tarjeta"><div><h2>Accesos rápidos</h2><p>¿Qué deseas hacer?</p></div></div><button class="acceso-rapido" data-ir="tareas"><span class="acceso-icono fondo-azul">＋</span><span><strong>Registrar tarea</strong><small>Crear una nueva actividad</small></span><b>›</b></button><button class="acceso-rapido" data-ir="distribucion"><span class="acceso-icono fondo-violeta">⇄</span><span><strong>Distribuir tareas</strong><small>Elegir modalidad y empleados</small></span><b>›</b></button><button class="acceso-rapido" data-ir="seguimiento"><span class="acceso-icono fondo-verde">◷</span><span><strong>Ver seguimiento</strong><small>Consultar avances y plazos</small></span><b>›</b></button><div class="nota-pequena">Las asignaciones se validarán y guardarán en una etapa posterior.</div></div>
+          </div>
+        </section>
+
+        <!-- Gerente: tareas -->
+        <section id="vista-tareas" class="vista oculto">
+          <div class="encabezado-pagina"><div><div class="sobre-titulo">GESTIÓN DE ACTIVIDADES</div><h1>Tareas</h1><p>Registra y consulta las actividades de tu área.</p></div><button id="boton-nueva-tarea" class="boton boton-primario" type="button">+ Nueva tarea</button></div>
+          <div id="caja-nueva-tarea" class="tarjeta formulario-tarea oculto">
+            <div class="cabecera-tarjeta"><div><h2>Registrar nueva tarea</h2><p>Completa la información básica de la actividad.</p></div><button id="cerrar-formulario" type="button" class="boton-cerrar" aria-label="Cerrar formulario">×</button></div>
+            <form id="formulario-tarea" class="cuadricula-formulario">
+              <div class="campo campo-completo"><label for="titulo-tarea">Título de la tarea <span class="requerido">*</span></label><input id="titulo-tarea" type="text" placeholder="Ej. Preparar informe mensual" maxlength="100" required></div>
+              <div class="campo campo-completo"><label for="descripcion-tarea">Descripción</label><textarea id="descripcion-tarea" rows="3" placeholder="Describe brevemente qué se debe realizar..."></textarea></div>
+              <div class="campo"><label for="area-tarea">Área</label><select id="area-tarea"><option>Administración</option></select></div>
+              <div class="campo"><label for="prioridad-tarea">Prioridad</label><select id="prioridad-tarea"><option>Media</option><option>Baja</option><option>Alta</option></select></div>
+              <div class="campo"><label for="plazo-tarea">Fecha límite sugerida (opcional)</label><input id="plazo-tarea" type="date"></div>
+              <div class="acciones-formulario"><button id="cancelar-tarea" type="button" class="boton boton-secundario">Cancelar</button><button class="boton boton-primario" type="submit">Guardar tarea (demo)</button></div>
+            </form>
+          </div>
+          <div class="tarjeta"><div class="cabecera-tarjeta cabecera-tabla"><div><h2>Listado de tareas</h2><p>Tareas registradas durante esta demostración</p></div><input type="search" id="buscar-tarea" class="campo-busqueda" placeholder="⌕  Buscar tarea..."></div><div class="tabla-contenedor"><table><thead><tr><th>ID</th><th>Tarea</th><th>Prioridad</th><th>Fecha sugerida</th><th>Situación</th></tr></thead><tbody id="tabla-tareas"></tbody></table></div></div>
+        </section>
+
+        <!-- Gerente: distribución -->
+        <section id="vista-distribucion" class="vista oculto">
+          <div class="encabezado-pagina"><div><div class="sobre-titulo">ASIGNACIÓN DE RESPONSABILIDADES</div><h1>Distribuir tareas</h1><p>Elige una modalidad y revisa cómo quedaría el reparto antes de confirmarlo.</p></div></div>
+          <div class="tarjeta"><div class="cabecera-tarjeta"><div><h2>Nueva distribución</h2><p>Completa los datos para obtener una previsualización.</p></div><span class="etiqueta-paso">Paso 1 de 2</span></div>
+            <div class="cuadricula-formulario">
+              <div class="campo"><label for="modo-distribucion">Modalidad de distribución</label><select id="modo-distribucion"><option value="individual">Individual · 1 tarea a 1 empleado</option><option value="seleccionados">Seleccionados · 1 tarea a varios</option><option value="area">Área completa · 1 tarea a todos</option><option value="roundrobin">Round Robin · varias tareas</option></select></div>
+              <div class="campo" id="campo-tarea-unica"><label for="tarea-distribucion">Tarea por asignar</label><select id="tarea-distribucion"></select></div>
+              <div class="campo campo-completo oculto" id="campo-tareas-lote"><label>Seleccionar tareas para el lote</label><div id="lista-tareas-lote" class="caja-seleccion"></div></div>
+              <div class="campo" id="campo-empleado-unico"><label for="empleado-distribucion">Empleado elegible</label><select id="empleado-distribucion"></select></div>
+              <div class="campo campo-completo oculto" id="campo-empleados-varios"><label>Empleados elegibles</label><div id="lista-empleados" class="caja-seleccion"></div></div>
+              <div class="campo campo-completo oculto" id="campo-empleados-area"><div class="aviso-informativo">Se incluirán todos los empleados activos y disponibles del área Administración.</div></div>
+              <div class="campo"><label for="fecha-distribucion">Fecha límite (opcional)</label><input id="fecha-distribucion" type="date"><small>Si se deja vacía, se usa la fecha sugerida de cada tarea, si existe.</small></div>
+            </div>
+          </div>
+          <div class="tarjeta tarjeta-separada"><div class="cabecera-tarjeta"><div><h2>Previsualización del reparto</h2><p>Esta tabla aún no registra asignaciones reales.</p></div><span id="contador-reparto" class="etiqueta-paso">0 asignaciones</span></div><div class="tabla-contenedor"><table><thead><tr><th>Tarea</th><th>Empleado</th><th>Fecha límite</th></tr></thead><tbody id="tabla-previsualizacion"></tbody></table></div><div class="pie-tarjeta"><span class="texto-neutro">Revisa los destinatarios antes de continuar.</span><button id="boton-confirmar" class="boton boton-primario" type="button">Confirmar distribución (demo) →</button></div></div>
+        </section>
+
+        <!-- Gerente: seguimiento -->
+        <section id="vista-seguimiento" class="vista oculto">
+          <div class="encabezado-pagina"><div><div class="sobre-titulo">CONTROL DEL ÁREA</div><h1>Seguimiento</h1><p>Consulta el estado individual de cada responsabilidad.</p></div></div>
+          <div class="tarjeta"><div class="cabecera-tarjeta"><div><h2>Asignaciones del área</h2><p>Una tarea puede tener varios empleados y cada uno conserva su propio estado.</p></div></div><div class="tabla-contenedor"><table><thead><tr><th>Tarea</th><th>Responsable</th><th>Estado</th><th>Fecha límite</th><th>Aviso</th></tr></thead><tbody id="tabla-seguimiento"></tbody></table></div></div>
+        </section>
+
+        <!-- Empleado: solo sus asignaciones -->
+        <section id="vista-mis-tareas" class="vista oculto">
+          <div class="encabezado-pagina"><div><div class="sobre-titulo">MI ESPACIO DE TRABAJO</div><h1>Mis tareas</h1><p>Aquí puedes consultar tus responsabilidades e indicar tu avance.</p></div></div>
+          <div class="aviso-informativo aviso-arriba">En esta demostración estás viendo únicamente las tareas de <strong>Ana Torres</strong>. Los cambios se reflejan en pantalla, pero no se guardan en una base de datos.</div>
+          <div id="lista-mis-tareas" class="lista-tarjetas-tareas"></div>
+        </section>
+
+        <!-- Administrador: configuración -->
+        <section id="vista-configuracion" class="vista oculto">
+          <div class="encabezado-pagina"><div><div class="sobre-titulo">ADMINISTRACIÓN DEL SISTEMA</div><h1>Configuración institucional</h1><p>Personaliza los datos visibles de tu institución.</p></div></div>
+          <div class="tarjeta tarjeta-mediana"><div class="cabecera-tarjeta"><div><h2>Información general</h2><p>Estos campos se conectarán al servidor en otro incremento.</p></div></div><form id="formulario-institucion" class="cuadricula-formulario"><div class="campo campo-completo"><label for="nombre-institucion">Nombre de la institución</label><input id="nombre-institucion" value="Mi Institución" required></div><div class="campo"><label for="tipo-institucion">Tipo de institución</label><select id="tipo-institucion"><option>Pública</option><option>Privada</option></select></div><div class="campo"><label for="zona-horaria">Zona horaria</label><select id="zona-horaria"><option>America/Lima</option></select></div><div class="acciones-formulario"><button class="boton boton-primario" type="submit">Guardar cambios (demo)</button></div></form></div>
+        </section>
+
+        <!-- Administrador: áreas y usuarios -->
+        <section id="vista-usuarios" class="vista oculto">
+          <div class="encabezado-pagina"><div><div class="sobre-titulo">ESTRUCTURA ORGANIZACIONAL</div><h1>Áreas y usuarios</h1><p>Consulta cómo se organizan los equipos y roles.</p></div></div>
+          <div class="tarjeta"><div class="cabecera-tarjeta"><div><h2>Áreas registradas</h2><p>Ejemplos de departamentos de la institución</p></div></div><div class="tabla-contenedor"><table><thead><tr><th>Área</th><th>Estado</th></tr></thead><tbody><tr><td>Administración</td><td><span class="estado estado-completada">Activa</span></td></tr><tr><td>Contabilidad</td><td><span class="estado estado-completada">Activa</span></td></tr><tr><td>Recursos Humanos</td><td><span class="estado estado-completada">Activa</span></td></tr></tbody></table></div></div>
+          <div class="tarjeta tarjeta-separada"><div class="cabecera-tarjeta"><div><h2>Usuarios de ejemplo</h2><p>Un mismo sistema, distintas responsabilidades</p></div></div><div class="tabla-contenedor"><table><thead><tr><th>Nombre</th><th>Rol</th><th>Área</th><th>Disponibilidad</th></tr></thead><tbody><tr><td>Lucía Ramos</td><td>Administrador</td><td>General</td><td><span class="estado estado-completada">Activo</span></td></tr><tr><td>María Castro</td><td>Gerente</td><td>Administración</td><td><span class="estado estado-completada">Activo</span></td></tr><tr><td>Ana Torres</td><td>Empleado</td><td>Administración</td><td><span class="estado estado-completada">Disponible</span></td></tr><tr><td>Luis Quispe</td><td>Empleado</td><td>Administración</td><td><span class="estado estado-completada">Disponible</span></td></tr><tr><td>Carla Flores</td><td>Empleado</td><td>Administración</td><td><span class="estado estado-completada">Disponible</span></td></tr></tbody></table></div></div>
+        </section>
+
+      </main>
+      <footer class="pie-general">Sistema Web de Distribución de Tareas Empresariales · Prototipo visual v0.1</footer>
+    </div>
+  </div>
+  <div id="mensaje" class="mensaje oculto" role="status"></div>
+  <script src="script.js"></script>
+</body>
+</html>
